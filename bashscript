@@ -1,2 +1,26 @@
 #!/bin/bash
-echo "hello world"
+
+sp=()
+extra=()
+
+while read -r line;
+do
+    sp+=("$line")
+done < "text.txt"
+
+n=${sp[0]}
+
+for ((i=0; i < $n; i++)) do
+    extra+=(0)
+done
+
+my_string="1 10 2"
+
+# Читаем строку в массив
+read -ra my_array <<< "$my_string"
+
+# Печатаем элементы массива
+for item in "${my_array[@]}"; do
+    echo "$item"
+done
+
