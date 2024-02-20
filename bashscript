@@ -16,30 +16,48 @@ for ((i=0; i < $n; i++)) do
 done
 
 k=1
-answer=1
+answer=0
 
 for item in "${sp[@]}"; do
     read -ra buf <<< "$item"
     num1=${buf[0]}
-    num1=${num1-1}
+    num1=$((num1))
+    num1=$((num1-1))
+
     num2=${buf[1]}
-    num2=${num2-1}
-    if [ ${extra[$num1]} -eq 0 ] && [${extra[$num2]} -eq 0]; then
-        extra[$num1]=k
-        extra[$num2]=k
-        k=${k+1}
-        answer=${answer+1}
-    elif [${extra[$num1]} != 0 ] && [${extra[$num2]} -eq 0]; then
+    num2=$((num2))
+    num2=$((num2-1))
+
+    check1=${extra[$num1]}
+    check2=${extra[$num2]}
+
+    m=$((m+1))
+
+    if [ ${extra[$num1]} -eq 0 ] && [ ${extra[$num2]} -eq 0 ]; then
+        extra[$num1]=$k
+        extra[$num2]=$k
+        k=$((k+1))
+        answer=$((answer+1))
+    elif [ ${extra[$num1]} -ne 0 ] && [ ${extra[$num2]} -eq 0 ]; then
          extra[$num2]=${extra[$num1]}
-    elif [${extra[$num1]} -eq 0 ] && [${extra[$num2]} != 0]; then
+    elif [ ${extra[$num1]} -eq 0 ] && [ ${extra[$num2]} -ne 0 ]; then
          extra[$num1]=${extra[$num2]}
-    elif [${extra[$num1]} != 0 ] && [${extra[$num2]} != 0]; then
-         for ((i=0; i < ${#extra[@]}; i++); do
-             if [${extra[i]} -eq ${extra[num2]}]; then
+    elif [ ${extra[$num1]} -ne 0 ] && [ ${extra[$num2]} -ne 0 ]; then
+         for ((i=0; i < ${#extra[@]}; i++))
+         do
+             if [ ${extra[i]} -eq ${extra[num2]} ]; then
                  extra[i]=${extra[num1]}
              fi
          done
-         answer=${answer-1}
+         answer=$((answer-1))
     fi
 done
 
+
+for item in "${extra[@]}"; do
+    if [ $item -eq 0 ]; then
+        answer=$((answer+1))
+    fi
+done
+
+echo $((answer - 1))
