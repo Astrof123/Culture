@@ -31,9 +31,15 @@ for item in "${sp[@]}"; do
         answer=${answer+1}
     elif [${extra[$num1]} != 0 ] && [${extra[$num2]} -eq 0]; then
          extra[$num2]=${extra[$num1]}
-    else
-        echo '0!=2'
+    elif [${extra[$num1]} -eq 0 ] && [${extra[$num2]} != 0]; then
+         extra[$num1]=${extra[$num2]}
+    elif [${extra[$num1]} != 0 ] && [${extra[$num2]} != 0]; then
+         for ((i=0; i < ${#extra[@]}; i++); do
+             if [${extra[i]} -eq ${extra[num2]}]; then
+                 extra[i]=${extra[num1]}
+             fi
+         done
+         answer=${answer-1}
     fi
-
 done
 
